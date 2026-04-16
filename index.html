@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Golf Puzzle</title>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background: #f5f1e8;
+            color: #1f1f1f;
+            margin: 0;
+            padding: 24px;
+        }
+
+        .wrap {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: #fffaf0;
+            border: 3px solid #b9931a;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .viewer {
+            width: 100%;
+            height: 75vh;
+            border: 2px solid #d8c98f;
+            border-radius: 10px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .viewer iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .answer-section {
+            margin-top: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"] {
+            flex: 1 1 260px;
+            min-width: 240px;
+            padding: 12px 14px;
+            font-size: 1rem;
+            border: 2px solid #c9b978;
+            border-radius: 10px;
+        }
+
+        button {
+            padding: 12px 18px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: 0;
+            border-radius: 10px;
+            background: #234b2a;
+            color: white;
+            cursor: pointer;
+        }
+
+        .result {
+            margin-top: 12px;
+            min-height: 24px;
+            font-weight: bold;
+        }
+
+        .success {
+            color: #1b5e20;
+        }
+
+        .error {
+            color: #8a1c1c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="card">
+            <div class="viewer">
+                <iframe src="golf-puzzle.pdf" title="Golf Puzzle PDF"></iframe>
+            </div>
+
+            <div class="answer-section">
+                <h2>Check your answer</h2>
+                <div class="input-row">
+                    <input id="answer" type="text" placeholder="Enter final answer" autocomplete="off" />
+                    <button id="checkButton" type="button">Submit</button>
+                </div>
+                <div id="result" class="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function checkAnswer() {
+            const input = document.getElementById("answer");
+            const result = document.getElementById("result");
+            const guess = input.value;
+
+            result.textContent = "Checking...";
+            result.className = "result";
+
+            try {
+                const response = await fetch("/api/check-answer", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ answer: guess })
+                });
+
+                const data = await response.json();
+
+                if (data.correct) {
+                    result.textContent = "Correct! Nicely played.";
+                    result.className = "result success";
+                } else {
+                    result.textContent = "Not quite. Try again.";
+                    result.className = "result error";
+                }
+            } catch (error) {
+                result.textContent = "Something went wrong. Please try again.";
+                result.className = "result error";
+            }
+        }
+
+        document.getElementById("checkButton").addEventListener("click", checkAnswer);
+        document.getElementById("answer").addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>
