@@ -246,8 +246,8 @@
 <body>
     <div class="wrap">
         <div class="header">
-            <h1>Golf Puzzle</h1>
-            <p>Track your progress on the scorecard, solve each hole, and enter the final answer below.</p>
+            <h1>Par for the Course</h1>
+            <p>By Eric Noga</p>
         </div>
 
         <section class="card">
@@ -267,49 +267,49 @@
                         <tr>
                             <td>1</td>
                             <td>(8)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>3</td>
                             <td>173</td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>(6)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>5</td>
                             <td>448</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>(5)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>4</td>
                             <td>326</td>
                         </tr>
                         <tr>
                             <td>4</td>
                             <td>(4)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>4</td>
                             <td>401</td>
                         </tr>
                         <tr>
                             <td>5</td>
                             <td>(7)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>5</td>
                             <td>528</td>
                         </tr>
                         <tr>
                             <td>6</td>
                             <td>(9)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>4</td>
                             <td>384</td>
                         </tr>
                         <tr>
                             <td>7</td>
                             <td>(3)</td>
-                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td><input class="score-input" type="text" placeholder="Your Answer" /></td>
                             <td>3</td>
                             <td>191</td>
                         </tr>
@@ -416,7 +416,7 @@
         </section>
 
         <section class="card">
-            <h2 class="section-title">Final Answer</h2>
+            <h2 class="section-title">Check Final Answer</h2>
             <div class="answer-section">
                 <div class="input-row">
                     <input id="answer" class="answer-input" type="text" placeholder="Enter final answer"
@@ -424,7 +424,6 @@
                     <button id="checkButton" type="button">Submit</button>
                 </div>
                 <div id="result" class="result"></div>
-                <div class="footer-note">Enter your final answer above to see if you've solved it.</div>
             </div>
         </section>
     </div>
@@ -450,7 +449,7 @@
                 const data = await response.json();
 
                 if (data.correct) {
-                    result.textContent = "Correct! Nicely played.";
+                    result.textContent = "Correct!";
                     result.className = "result success";
                 } else {
                     result.textContent = "Not quite. Try again.";
