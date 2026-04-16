@@ -10,11 +10,12 @@
             --bg: #f5f1e8;
             --card: #fffaf0;
             --gold: #b9931a;
+            --gold-light: #d8c98f;
             --green: #234b2a;
             --text: #1f1f1f;
             --muted: #666;
-            --success-text: #1b5e20;
-            --error-text: #8a1c1c;
+            --success: #1b5e20;
+            --error: #8a1c1c;
         }
 
         * {
@@ -22,66 +23,136 @@
         }
 
         body {
+            margin: 0;
             font-family: Georgia, "Times New Roman", serif;
             background: var(--bg);
             color: var(--text);
-            margin: 0;
             padding: 24px;
         }
 
         .wrap {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 28px;
         }
 
         .header h1 {
             margin: 0 0 8px;
             color: var(--green);
-            font-size: 2rem;
+            font-size: 2.2rem;
         }
 
         .header p {
             margin: 0;
             color: var(--muted);
+            font-size: 1.05rem;
         }
 
         .card {
             background: var(--card);
             border: 3px solid var(--gold);
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            margin: 0 0 16px;
+            color: var(--green);
+            font-size: 1.5rem;
+        }
+
+        .scorecard-wrap {
+            overflow-x: auto;
+        }
+
+        table.scorecard {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+            background: white;
+            border: 2px solid var(--gold-light);
+        }
+
+        .scorecard th,
+        .scorecard td {
+            border: 1px solid #999;
+            padding: 12px 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .scorecard th {
+            background: #f1ead6;
+            font-weight: bold;
+        }
+
+        .score-input {
+            width: 100%;
+            min-width: 140px;
+            padding: 8px 10px;
+            border: 1px solid #bbb;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #fffef9;
+        }
+
+        .holes {
+            display: grid;
+            gap: 24px;
+        }
+
+        .hole-card {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 24px;
+            align-items: center;
+            background: white;
+            border: 2px solid var(--gold-light);
             border-radius: 14px;
             padding: 18px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
         }
 
-        .viewer {
+        .hole-image-wrap {
+            text-align: center;
+        }
+
+        .hole-image {
             width: 100%;
-            height: 75vh;
-            border: 2px solid #d8c98f;
+            max-width: 320px;
+            height: auto;
+            border: 2px solid #e0d2a3;
             border-radius: 10px;
-            overflow: hidden;
-            background: white;
+            background: #faf7ef;
         }
 
-        .viewer iframe {
-            width: 100%;
-            height: 100%;
-            border: 0;
+        .hole-text h3 {
+            margin: 0 0 12px;
+            color: var(--green);
+            font-size: 1.3rem;
+        }
+
+        .hole-meta {
+            margin: 0 0 14px;
+            color: var(--muted);
+            font-size: 0.98rem;
+        }
+
+        .hole-text p {
+            margin: 0;
+            font-size: 1.15rem;
+            line-height: 1.6;
         }
 
         .answer-section {
-            margin-top: 20px;
             display: grid;
             gap: 12px;
-        }
-
-        h2 {
-            margin: 0;
-            color: var(--green);
         }
 
         .input-row {
@@ -90,7 +161,7 @@
             flex-wrap: wrap;
         }
 
-        input[type="text"] {
+        .answer-input {
             flex: 1 1 260px;
             min-width: 240px;
             padding: 12px 14px;
@@ -98,9 +169,11 @@
             border: 2px solid #c9b978;
             border-radius: 10px;
             outline: none;
+            font-family: inherit;
         }
 
-        input[type="text"]:focus {
+        .answer-input:focus,
+        .score-input:focus {
             border-color: var(--gold);
             box-shadow: 0 0 0 3px rgba(185, 147, 26, 0.15);
         }
@@ -114,6 +187,7 @@
             background: var(--green);
             color: white;
             cursor: pointer;
+            font-family: inherit;
         }
 
         button:hover {
@@ -126,11 +200,11 @@
         }
 
         .success {
-            color: var(--success-text);
+            color: var(--success);
         }
 
         .error {
-            color: var(--error-text);
+            color: var(--error);
         }
 
         .footer-note {
@@ -138,13 +212,32 @@
             color: var(--muted);
         }
 
+        @media (max-width: 850px) {
+            .hole-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hole-text h3 {
+                margin-top: 4px;
+            }
+        }
+
         @media (max-width: 700px) {
             body {
                 padding: 16px;
             }
 
-            .viewer {
-                height: 62vh;
+            .card {
+                padding: 16px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .hole-text p {
+                font-size: 1.05rem;
             }
         }
     </style>
@@ -153,27 +246,187 @@
 <body>
     <div class="wrap">
         <div class="header">
-            <h1>Par For the Course</h1>
-            <p>By Eric Noga</p>
+            <h1>Golf Puzzle</h1>
+            <p>Track your progress on the scorecard, solve each hole, and enter the final answer below.</p>
         </div>
 
-        <div class="card">
-            <div class="viewer">
-                <iframe src="golf-puzzle.pdf" title="Golf Puzzle PDF"></iframe>
+        <section class="card">
+            <h2 class="section-title">Scorecard</h2>
+            <div class="scorecard-wrap">
+                <table class="scorecard">
+                    <thead>
+                        <tr>
+                            <th>Hole</th>
+                            <th>HCP</th>
+                            <th>"Score"</th>
+                            <th>Par</th>
+                            <th>Yards</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>(8)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>3</td>
+                            <td>173</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>(6)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>5</td>
+                            <td>448</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>(5)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>4</td>
+                            <td>326</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>(4)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>4</td>
+                            <td>401</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>(7)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>5</td>
+                            <td>528</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>(9)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>4</td>
+                            <td>384</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td>(3)</td>
+                            <td><input class="score-input" type="text" placeholder="Your score" /></td>
+                            <td>3</td>
+                            <td>191</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </section>
 
+        <section class="card">
+            <h2 class="section-title">Holes</h2>
+
+            <div class="holes">
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole1.png" alt="Hole 1" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 1</h3>
+                        <p class="hole-meta">Par 3 • 173 yards</p>
+                        <p>Great shot—windy day, hope I brought my scuba gear! Tried to make up for it and absolutely
+                            blasted the next one way right but thankfully short of any trouble. No idea how, but I
+                            pulled it together at the end and found the green.</p>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole2.png" alt="Hole 2" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 2</h3>
+                        <p class="hole-meta">Par 5 • 448 yards</p>
+                        <p>Perfect shot… for building sand castles. Then I overcorrected and launched one way left about
+                            100 yards into no man's land. I managed to roll the next one up, just on the front of the
+                            green.</p>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole3.png" alt="Hole 3" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 3</h3>
+                        <p class="hole-meta">Par 4 • 326 yards</p>
+                        <p>Caught this one flush and left myself about 160 to the pin. Naturally, I overdid the next
+                            shot and sent it long. Hit a couple tree branches, but somehow still found the green.</p>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole4.png" alt="Hole 4" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 4</h3>
+                        <p class="hole-meta">Par 4 • 401 yards</p>
+                        <p>Wow! If I didn’t know any better, I might actually consider myself a good golfer after that
+                            one!</p>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole5.png" alt="Hole 5" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 5</h3>
+                        <p class="hole-meta">Par 5 • 528 yards</p>
+                        <p>Should have known the last hole was a fluke, probably cheaper to buy fish food instead of
+                            golf balls next time. Ironically, I ended up in close proximity to the beach but saved
+                            myself and got to the green eventually.</p>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole6.png" alt="Hole 6" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 6</h3>
+                        <p class="hole-meta">Par 4 • 384 yards</p>
+                        <p>Running low on golf balls now so I decided to play it safe off the tee. I’ve been lucky to
+                            avoid it mostly so far, but found myself in the same situation as hole 2 after the second
+                            shot. Managed to get out of trouble and get onto the green… even though it took a couple
+                            tries.</p>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image-wrap">
+                        <img src="images/hole7.png" alt="Hole 7" class="hole-image" />
+                    </div>
+                    <div class="hole-text">
+                        <h3>Hole 7</h3>
+                        <p class="hole-meta">Par 3 • 191 yards</p>
+                        <p>The last hole I can play today so I swung as hard as I could, fantastic swing but managed to
+                            nail a tree and bounce backwards about 40 yards. Decided to just follow the tree line but
+                            stayed inside the cart path at least. The next shot was just off the back of the green but I
+                            got there eventually.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2 class="section-title">Final Answer</h2>
             <div class="answer-section">
-                <h2>Check your answer</h2>
                 <div class="input-row">
-                    <input id="answer" type="text" placeholder="Enter final answer" autocomplete="off" />
+                    <input id="answer" class="answer-input" type="text" placeholder="Enter final answer"
+                        autocomplete="off" />
                     <button id="checkButton" type="button">Submit</button>
                 </div>
                 <div id="result" class="result"></div>
-                <div class="footer-note">
-                    Enter your final answer above to see if you've solved it.
-                </div>
+                <div class="footer-note">Enter your final answer above to see if you've solved it.</div>
             </div>
-        </div>
+        </section>
     </div>
 
     <script>
